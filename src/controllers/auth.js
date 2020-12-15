@@ -14,7 +14,7 @@ router.post('/sign-up', async (req, res) => {
 	const { email, password } = body
 
 	const findAccount = await Account.findOne({ where: { email } })
-	if (findAccount) return res.json('Account already exists.')
+	if (findAccount) return res.jsonBadRequest(null, 'Account already exists.')
 
 	const hash = bcrypt.hashSync(password, saltRounds)
 
@@ -23,7 +23,7 @@ router.post('/sign-up', async (req, res) => {
 		password: hash,
 	})
 
-	return res.json(newAccount)
+	return res.jsonOK(newAccount)
 })
 
 module.exports = router
