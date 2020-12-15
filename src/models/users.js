@@ -32,6 +32,7 @@ module.exports = (sequelize, DataTypes) => {
 
 	User.associate = (models) => {
 		User.belongsTo(models.Account, { foreignKey: 'email' })
+		User.hasMany(models.Place, { foreignKey: 'id' })
 	}
 
 	return User
