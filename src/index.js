@@ -1,13 +1,16 @@
 const express = require('express')
-const db = require('./models')
 const cors = require('cors')
+const db = require('./models')
 const authController = require('./controllers/auth')
 const response = require('./middlewares/response')
+const checkJwt = require('./middlewares/jwt')
 
 const app = express()
 
-app.use(response)
 app.use(cors())
+app.use(response)
+app.use(checkJwt)
+
 // middlewares do próprio express;
 app.use(express.json())
 // utilizando o URLencoded você consegue pegar o body da req;
