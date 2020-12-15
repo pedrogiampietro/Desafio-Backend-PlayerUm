@@ -13,7 +13,19 @@ module.exports = (sequelize, DataTypes) => {
 			allowNull: false,
 			defaultValue: 0,
 		},
+		passwordResetToken: {
+			type: DataTypes.STRING,
+			select: false,
+		},
+		passwordResetExpires: {
+			type: DataTypes.DATE,
+			select: false,
+		},
 	})
+
+	Account.associate = (models) => {
+		Account.hasOne(models.User, { foreignKey: 'email' })
+	}
 
 	Account.prototype.toJSON = function () {
 		const values = { ...this.get() }
