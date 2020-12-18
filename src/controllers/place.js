@@ -20,4 +20,20 @@ router.get('/:id', async (req, res) => {
   return res.jsonOK(place)
 })
 
+router.post('/', async (req, res) => {
+  const { accountId, body } = req
+  const { title, image, description } = body
+
+  const addPlace = await Place.create({
+    title,
+    accountId,
+    image,
+    description,
+  })
+
+  console.log(addPlace)
+
+  // return res.jsonOK(place)
+})
+
 module.exports = router
