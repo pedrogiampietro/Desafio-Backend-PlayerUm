@@ -10,7 +10,7 @@ module.exports = {
 
     try {
       const decoded = verifyJwt(token)
-      req.account_id = decoded.id
+      req.accountId = decoded.id
     } catch (err) {
       return res.status(400).json(err)
     }

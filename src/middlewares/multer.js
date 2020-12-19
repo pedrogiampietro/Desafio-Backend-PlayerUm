@@ -32,8 +32,6 @@ const uploadPlacesPicture = multer({
 })
 
 module.exports = {
-  storage,
-  upload,
   placesPicture,
   uploadPlacesPicture,
 }
