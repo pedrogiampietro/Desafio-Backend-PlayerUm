@@ -3,6 +3,7 @@ const { Place } = require('../models')
 const router = express.Router()
 
 const { checkJwt } = require('../middlewares/jwt')
+const { uploadPlacesPicture } = require('../middlewares/multer')
 
 router.get('/listAll', async (req, res) => {
   const places = await Place.findAll()
@@ -28,18 +29,26 @@ router.get('/:id', checkJwt, async (req, res) => {
   return res.jsonOK(place)
 })
 
-router.post('/', checkJwt, async (req, res) => {
-  const { accountId, body } = req
-  const { title, image, description } = body
+router.post(
+  '/',
+  checkJwt,
+  uploadPlacesPicture.single('image'),
+  async (req, res) => {
+    const { accountId, body } = req
+    const { title, image, description } = body
+    const finalFileName = req.file
 
-  const addPlace = await Place.create({
-    title,
-    accountId,
-    image,
-    description,
-  })
+    //criar logica para conferir qual está sendo enviado, por url ou por upload.
 
-  return res.jsonOK(addPlace)
-})
+    const addPlace = await Place.create({
+      title,
+      accountId,
+      image: `uploads/${finalFileName.filename}`,
+      description,
+    })
+
+    return res.jsonOK(addPlace)
+  }
+)
 
 module.exports = router
