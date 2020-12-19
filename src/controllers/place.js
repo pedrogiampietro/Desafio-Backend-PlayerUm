@@ -2,25 +2,33 @@ const express = require('express')
 const { Place } = require('../models')
 const router = express.Router()
 
-router.get('/', async (req, res) => {
-  const { accountId } = req
+const { checkJwt } = require('../middlewares/jwt')
 
-  const places = await Place.findAll({ where: { id: accountId } })
+router.get('/listAll', async (req, res) => {
+  const places = await Place.findAll()
 
   return res.jsonOK(places)
 })
 
-router.get('/:id', async (req, res) => {
+router.get('/', checkJwt, async (req, res) => {
+  const { accountId } = req
+
+  const places = await Place.findAll({ where: { accountId: accountId } })
+
+  return res.jsonOK(places)
+})
+
+router.get('/:id', checkJwt, async (req, res) => {
   const { accountId } = req
   const { id } = req.params
 
-  const place = await Place.findOne({ where: { id: id, id: accountId } })
+  const place = await Place.findOne({ where: { id: id, accountId: accountId } })
   if (!place) return res.jsonNotFound()
 
   return res.jsonOK(place)
 })
 
-router.post('/', async (req, res) => {
+router.post('/', checkJwt, async (req, res) => {
   const { accountId, body } = req
   const { title, image, description } = body
 
@@ -31,9 +39,7 @@ router.post('/', async (req, res) => {
     description,
   })
 
-  console.log(addPlace)
-
-  // return res.jsonOK(place)
+  return res.jsonOK(addPlace)
 })
 
 module.exports = router
