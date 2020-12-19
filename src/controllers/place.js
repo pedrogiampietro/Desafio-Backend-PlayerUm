@@ -6,6 +6,75 @@ const { uploadPlacesPicture } = require('../middlewares/multer')
 
 const router = express.Router()
 
+/* part to like in place */
+router.get('/getLikes', async (req, res) => {
+  const getLikes = await Place.findAll({
+    attributes: ['likes_count', 'id'],
+  })
+
+  return res.jsonOK(getLikes)
+})
+
+router.post('/upLike/:id', checkJwt, async (req, res) => {
+  const { id } = req.params
+  const { accountid } = req.headers
+
+  let likedPlace = await Place.findOne({
+    attributes: ['likes_count', 'id', 'accountId'],
+    where: { id: id },
+  })
+
+  const data = likedPlace.dataValues.likes_count
+
+  if (data.includes(accountid))
+    return res.status(400).send('Place already liked.')
+
+  const newLike = await Place.update(
+    { likes_count: [...data, Number(accountid)] },
+    { where: { id } }
+  )
+
+  if (newLike) {
+    likedPlace = await Place.findOne({
+      attributes: ['likes_count', 'id', 'accountId'],
+      where: { id: id },
+    })
+  }
+
+  if (!likedPlace) return res.jsonNotFound(null)
+
+  return res.jsonOK(likedPlace)
+})
+
+router.post('/disLike/:id', checkJwt, async (req, res) => {
+  const { id } = req.params
+  const { accountid } = req.headers
+
+  let dislikedPost = await Place.findOne({
+    attributes: ['likes_count', 'id', 'accountId'],
+    where: { id: id },
+  })
+
+  const data = dislikedPost.dataValues.likes_count
+
+  if (!data.includes(Number(accountid)))
+    return res.status(400).send('Post not liked yet.')
+
+  const array = data
+  const index = array.indexOf(Number(accountid))
+  if (index > -1) {
+    array.splice(index, 1)
+  }
+
+  const disLike = await Place.update({ likes_count: array }, { where: { id } })
+
+  if (!dislikedPost) return res.jsonNotFound(null)
+
+  return res.jsonOK(dislikedPost)
+})
+
+/* end part like */
+
 router.get('/', checkJwt, async (req, res) => {
   const { accountId } = req
 
