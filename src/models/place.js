@@ -1,35 +1,39 @@
 module.exports = (sequelize, DataTypes) => {
-  const Place = sequelize.define('Place', {
-    title: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    accountId: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      references: {
-        model: 'accounts',
-        key: 'id',
+  const Place = sequelize.define(
+    'Place',
+    {
+      title: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      accountId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+          model: 'accounts',
+          key: 'id',
+        },
+      },
+      image: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      description: {
+        type: DataTypes.TEXT('long'),
+        allowNull: false,
+      },
+      views: {
+        type: DataTypes.STRING,
+        defaultValue: '',
+        allowNull: false,
+      },
+      likes_count: {
+        type: DataTypes.JSON,
+        defaultValue: [],
       },
     },
-    image: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    description: {
-      type: DataTypes.TEXT('long'),
-      allowNull: false,
-    },
-    views: {
-      type: DataTypes.STRING,
-      defaultValue: '',
-      allowNull: false,
-    },
-    likes_count: {
-      type: DataTypes.JSON,
-      defaultValue: [],
-    },
-  })
+    { freezeTableName: true }
+  )
 
   Place.associate = (models) => {
     // Place.belongsTo(models.User, { foreignKey: 'email' })
