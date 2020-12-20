@@ -75,6 +75,30 @@ router.post('/disLike/:id', checkJwt, async (req, res) => {
 
 /* end part like */
 
+/* ranking */
+
+router.get('/ranking', async (req, res) => {
+  const { page } = req.query
+  let rankingPlace
+  const pageSize = page
+  const limit = 10
+  const offset = Number(pageSize) * limit
+
+  rankingPlace = await Place.findAll({
+    limit,
+    offset: offset,
+
+    order: [
+      ['likes_count', 'DESC'],
+      ['title', 'ASC'],
+    ],
+  })
+
+  return res.jsonOK(rankingPlace)
+})
+
+/* end ranking */
+
 router.get('/', checkJwt, async (req, res) => {
   const { accountId } = req
 
