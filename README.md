@@ -16,11 +16,11 @@ and for location routes it is /place
 | :--------------------: | ------------------------------------------------- | --------------------------- |
 | Sign up | User can sign up an account by inputting, email, password | /auth/sign-up |
 | Log in | User can log in using registered email | /auth/sign-in |
-| View all places | / |
-| Create a place | /place |
-| View a place | /place/:id |
-| Edit a place | /place/:id/edit |
-| Delete a place | /place/:id |
+| View all places | | / |
+| Create a place | | /place |
+| View a place | | | /place/:id |
+| Edit a place | | | /place/:id/edit |
+| Delete a place | | /place/:id |
 
 ___
 
