@@ -138,4 +138,14 @@ router.put('/:id', checkJwt, async (req, res) => {
   return res.jsonOK(place)
 })
 
+router.delete('/:id', checkJwt, async (req, res) => {
+  const { accountId } = req
+  const { id } = req.params
+  const place = await Place.findOne({ where: { id: id, accountId: accountId } })
+  if (!place) return res.jsonNotFound()
+
+  await place.destroy()
+  return res.jsonOK()
+})
+
 module.exports = router
