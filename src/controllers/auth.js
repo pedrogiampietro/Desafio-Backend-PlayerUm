@@ -4,7 +4,12 @@ const { Account } = require('../models')
 const { accountSignIn, accountSignUp } = require('../validators/account')
 
 const { getMessage } = require('../helpers/messages')
-const { generateJwt, generateRefreshJwt } = require('../helpers/jwt')
+const {
+  generateJwt,
+  generateRefreshJwt,
+  verifyRefreshJwt,
+  getTokenFromHeaders,
+} = require('../helpers/jwt')
 
 const router = express.Router()
 const saltRounds = 10

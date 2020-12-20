@@ -121,4 +121,21 @@ router.post(
   }
 )
 
+router.put('/:id', checkJwt, async (req, res) => {
+  const { accountId, body } = req
+  const { id } = req.params
+  const fields = ['title', 'description']
+
+  const place = await Place.findOne({ where: { id: id, accountId: accountId } })
+  if (!place) return res.jsonNotFound()
+
+  fields.map((fieldName) => {
+    const newValue = body[fieldName]
+    if (newValue) place[fieldName] = newValue
+  })
+
+  await place.save()
+  return res.jsonOK(place)
+})
+
 module.exports = router
