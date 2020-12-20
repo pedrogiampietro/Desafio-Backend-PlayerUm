@@ -5,7 +5,8 @@ Senhor dos Aneis web application built with Node.js, Express, and MySQL(Sequeliz
 ### Trial in this project 🤠
 + [Multer](https://www.npmjs.com/package/multer) is used to handle upload images
 
-
+## Restful
+Routes mapped from Insomnia exported file: [Insomnia.json](https://github.com/pedrogiampietro/Desafio-Backend-PlayerUm/blob/master/API-Restful-Playerum.json)
 ___
 
 ## Features
